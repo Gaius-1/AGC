@@ -768,6 +768,155 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
+export interface ApiBuildingMaterialBuildingMaterial
+  extends Schema.CollectionType {
+  collectionName: 'building_materials';
+  info: {
+    singularName: 'building-material';
+    pluralName: 'building-materials';
+    displayName: 'Building Material';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    item: Attribute.String & Attribute.Required;
+    image: Attribute.Media & Attribute.Required;
+    price: Attribute.Float & Attribute.Required;
+    priceUpwardTrend: Attribute.Boolean & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::building-material.building-material',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::building-material.building-material',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCategoryCategory extends Schema.CollectionType {
+  collectionName: 'categories';
+  info: {
+    singularName: 'category';
+    pluralName: 'categories';
+    displayName: 'Category';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    slug: Attribute.UID<'api::category.category', 'name'>;
+    projects: Attribute.Relation<
+      'api::category.category',
+      'oneToMany',
+      'api::project.project'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::category.category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::category.category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiProjectProject extends Schema.CollectionType {
+  collectionName: 'projects';
+  info: {
+    singularName: 'project';
+    pluralName: 'projects';
+    displayName: 'Project';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    description: Attribute.Text & Attribute.Required;
+    client: Attribute.String;
+    location: Attribute.String & Attribute.Required;
+    surfaceArea: Attribute.String & Attribute.Required;
+    dateCompleted: Attribute.Date;
+    value: Attribute.Integer;
+    architect: Attribute.String & Attribute.DefaultTo<'Addo Grand & Co.'>;
+    images: Attribute.Media & Attribute.Required;
+    coverPhoto: Attribute.Media & Attribute.Required;
+    category: Attribute.Relation<
+      'api::project.project',
+      'manyToOne',
+      'api::category.category'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::project.project',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::project.project',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiRentalRental extends Schema.CollectionType {
+  collectionName: 'rentals';
+  info: {
+    singularName: 'rental';
+    pluralName: 'rentals';
+    displayName: 'Rental';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    slug: Attribute.UID<'api::rental.rental', 'item'>;
+    item: Attribute.String;
+    stock: Attribute.Integer & Attribute.Required;
+    isPopular: Attribute.Boolean;
+    image: Attribute.Media & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::rental.rental',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::rental.rental',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -786,6 +935,10 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::building-material.building-material': ApiBuildingMaterialBuildingMaterial;
+      'api::category.category': ApiCategoryCategory;
+      'api::project.project': ApiProjectProject;
+      'api::rental.rental': ApiRentalRental;
     }
   }
 }
