@@ -815,11 +815,6 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
   attributes: {
     name: Attribute.String & Attribute.Required;
     slug: Attribute.UID<'api::category.category', 'name'>;
-    projects: Attribute.Relation<
-      'api::category.category',
-      'oneToMany',
-      'api::project.project'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -862,7 +857,7 @@ export interface ApiProjectProject extends Schema.CollectionType {
     coverPhoto: Attribute.Media & Attribute.Required;
     category: Attribute.Relation<
       'api::project.project',
-      'manyToOne',
+      'oneToOne',
       'api::category.category'
     >;
     createdAt: Attribute.DateTime;
