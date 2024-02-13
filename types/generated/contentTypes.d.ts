@@ -878,6 +878,44 @@ export interface ApiProjectProject extends Schema.CollectionType {
   };
 }
 
+export interface ApiPropertyProperty extends Schema.CollectionType {
+  collectionName: 'properties';
+  info: {
+    singularName: 'property';
+    pluralName: 'properties';
+    displayName: 'Property';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Title: Attribute.String & Attribute.Required;
+    Location: Attribute.String & Attribute.Required;
+    Category: Attribute.String & Attribute.Required;
+    Price: Attribute.Decimal & Attribute.Required;
+    Image: Attribute.Media & Attribute.Required;
+    IG_Post: Attribute.String &
+      Attribute.Required &
+      Attribute.DefaultTo<'https://www.instagram.com/Addograndconstruction/'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::property.property',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::property.property',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiRentalRental extends Schema.CollectionType {
   collectionName: 'rentals';
   info: {
@@ -933,6 +971,7 @@ declare module '@strapi/types' {
       'api::building-material.building-material': ApiBuildingMaterialBuildingMaterial;
       'api::category.category': ApiCategoryCategory;
       'api::project.project': ApiProjectProject;
+      'api::property.property': ApiPropertyProperty;
       'api::rental.rental': ApiRentalRental;
     }
   }
